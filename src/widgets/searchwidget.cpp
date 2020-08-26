@@ -205,6 +205,3 @@ void SearchWidget::updateCurrentCategoryBtnIcon()
         m_toggleCategoryBtn->setIconSize(QSize(ICON_SIZE - 10, ICON_SIZE - 10));
     }
 }
-
-
-
