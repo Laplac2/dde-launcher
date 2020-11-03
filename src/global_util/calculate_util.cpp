@@ -212,10 +212,9 @@ void CalculateUtil::calculateAppLayout(const QSize &containerSize, const int cur
 }
 
 CalculateUtil::CalculateUtil(QObject *parent)
-    : QObject(parent),
-      m_dockInter(new DBusDock(this)),
-      m_launcherGsettings(new QGSettings("com.deepin.dde.launcher",
-                                         "/com/deepin/dde/launcher/", this))
+    : QObject(parent)
+    , m_dockInter(new DockInter("com.deepin.dde.daemon.Dock", "/com/deepin/dde/daemon/Dock", QDBusConnection::sessionBus(), this))
+    , m_launcherGsettings(new QGSettings("com.deepin.dde.launcher", "/com/deepin/dde/launcher/", this))
 {
     m_launcherInter = new DBusLauncher(this);
     isFullScreen = m_launcherInter->fullscreen();
@@ -235,7 +234,7 @@ void CalculateUtil::calculateTextSize()
 QScreen *CalculateUtil::currentScreen() const
 {
     QScreen * s = qApp->primaryScreen();
-    const QRect dockRect = m_dockInter->frontendRect();
+    const QRect dockRect = m_dockInter->frontendWindowRect();
     const auto ratio = qApp->devicePixelRatio();
 
     for (auto *screen : qApp->screens()) {

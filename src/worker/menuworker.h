@@ -36,11 +36,13 @@
 #include <QModelIndex>
 #include <QGSettings>
 
-#include "src/dbusinterface/dbusdock.h"
+#include <com_deepin_dde_daemon_dock.h>
 #include "src/dbusinterface/dbuslauncher.h"
 #include "src/dbusinterface/dbustartmanager.h"
 #include "src/model/appsmanager.h"
 #include "src/model/appslistmodel.h"
+
+using DockInter = com::deepin::dde::daemon::Dock;
 
 class MenuWorker : public QObject
 {
@@ -90,7 +92,7 @@ public slots:
 
 private:
     QGSettings *m_xsettings;
-    DBusDock* m_dockAppManagerInterface;
+    DockInter *m_dockInter;
     DBusLauncher* m_launcherInterface;
     DBusStartManager* m_startManagerInterface;
     CalculateUtil *m_calcUtil;

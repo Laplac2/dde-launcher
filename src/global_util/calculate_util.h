@@ -32,13 +32,15 @@
 #include <DSysInfo>
 
 #include "src/dbusinterface/dbuslauncher.h"
-#include "src/dbusinterface/dbusdock.h"
+#include <com_deepin_dde_daemon_dock.h>
 
 #define ALL_APPS            0
 #define GROUP_BY_CATEGORY   1
 #define SEARCH              2
 
 DCORE_USE_NAMESPACE
+using DockInter = com::deepin::dde::daemon::Dock;
+
 class CalculateUtil : public QObject
 {
     Q_OBJECT
@@ -107,7 +109,7 @@ private:
     bool isFullScreen;
 
     DBusLauncher *m_launcherInter;
-    DBusDock *m_dockInter;
+    DockInter *m_dockInter;
 
     QGSettings *m_launcherGsettings;
 };

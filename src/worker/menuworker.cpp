@@ -32,7 +32,7 @@ static QString ChainsProxy_path = QStandardPaths::standardLocations(QStandardPat
 MenuWorker::MenuWorker(QObject *parent) : QObject(parent)
 {
     m_xsettings = new QGSettings("com.deepin.xsettings", QByteArray(), this);
-    m_dockAppManagerInterface = new DBusDock(this);
+    m_dockInter = new DockInter("com.deepin.dde.daemon.Dock", "/com/deepin/dde/daemon/Dock", QDBusConnection::sessionBus(), this);
     m_startManagerInterface = new DBusStartManager(this);
     m_launcherInterface = new DBusLauncher(this);
     m_appManager = AppsManager::instance();
@@ -231,7 +231,7 @@ void MenuWorker::handleToDesktop(){
 void MenuWorker::handleToDock(){
     qDebug() << "handleToDock" << m_appKey;
     if (m_isItemOnDock){
-        QDBusPendingReply<bool> reply = m_dockAppManagerInterface->RequestUndock(m_appDesktop);
+        QDBusPendingReply<bool> reply = m_dockInter->RequestUndock(m_appDesktop);
         reply.waitForFinished();
         if (!reply.isError()) {
             bool ret = reply.argumentAt(0).toBool();
@@ -240,7 +240,7 @@ void MenuWorker::handleToDock(){
             qCritical() << reply.error().name() << reply.error().message();
         }
     }else{
-        QDBusPendingReply<bool> reply =  m_dockAppManagerInterface->RequestDock(m_appDesktop, -1);
+        QDBusPendingReply<bool> reply =  m_dockInter->RequestDock(m_appDesktop, -1);
         reply.waitForFinished();
         if (!reply.isError()) {
             bool ret = reply.argumentAt(0).toBool();

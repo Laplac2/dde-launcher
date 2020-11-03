@@ -78,7 +78,6 @@ inline const QPoint scaledPosition(const QPoint &xpos)
 
 WindowedFrame::WindowedFrame(QWidget *parent)
     : DBlurEffectWidget(parent)
-    , m_dockInter(new DBusDock(this))
     , m_menuWorker(new MenuWorker)
     , m_eventFilter(new SharedEventFilter(this))
     , m_windowHandle(this, this)
@@ -94,6 +93,7 @@ WindowedFrame::WindowedFrame(QWidget *parent)
     , m_delayHideTimer(new QTimer)
     , m_autoScrollTimer(new QTimer)
     , m_appearanceInter(new Appearance("com.deepin.daemon.Appearance", "/com/deepin/daemon/Appearance", QDBusConnection::sessionBus(), this))
+    , m_dockInter(new DockInter("com.deepin.dde.daemon.Dock", "/com/deepin/dde/daemon/Dock", QDBusConnection::sessionBus(), this))
     , m_displayMode(All)
     , m_calcUtil(CalculateUtil::instance())
     , m_focusPos(Applist)
@@ -296,7 +296,7 @@ void WindowedFrame::showLauncher()
     m_windowHandle.setClipPath(m_cornerPath);
     show();
 
-    connect(m_dockInter, &DBusDock::FrontendRectChanged, this, &WindowedFrame::hideLauncher);
+    connect(m_dockInter, &DockInter::FrontendWindowRectChanged, this, &WindowedFrame::hideLauncher);
 }
 
 void WindowedFrame::hideLauncher()
@@ -307,7 +307,7 @@ void WindowedFrame::hideLauncher()
 
     m_delayHideTimer->stop();
 
-    disconnect(m_dockInter, &DBusDock::FrontendRectChanged, this, &WindowedFrame::hideLauncher);
+    disconnect(m_dockInter, &DockInter::FrontendWindowRectChanged, this, &WindowedFrame::hideLauncher);
 
     m_searcherEdit->lineEdit()->clear();
     m_searcherEdit->clearEdit();
@@ -808,8 +808,8 @@ void WindowedFrame::initAnchoredCornor()
 void WindowedFrame::adjustPosition()
 {
     const int dockPos = m_dockInter->position();
-    QRect r =  m_dockInter->frontendRect();
-    QRect dockRect = QRect(scaledPosition(r.topLeft()),scaledPosition(r.bottomRight()));
+    QRect r = m_dockInter->frontendWindowRect();
+    QRect dockRect = QRect(scaledPosition(r.topLeft()), scaledPosition(r.bottomRight()));
 
     const auto &s = size();
     int dockSpacing = 0;

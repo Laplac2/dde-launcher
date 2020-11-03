@@ -28,7 +28,7 @@
 #include "src/dbusinterface/dbuslauncher.h"
 #include "src/dbusinterface/dbusfileinfo.h"
 #include "src/dbusinterface/dbustartmanager.h"
-#include "src/dbusinterface/dbusdock.h"
+#include <com_deepin_dde_daemon_dock.h>
 #include "src/dbusinterface/dbusdisplay.h"
 #include "src/global_util/calculate_util.h"
 
@@ -53,6 +53,8 @@
 
 #define MAX_VIEW_NUM    255
 #define CATEGORY_COUNT    11
+
+using DockInter = com::deepin::dde::daemon::Dock;
 
 class CalculateUtil;
 class AppsManager : public QObject
@@ -161,7 +163,7 @@ private:
 private:
     DBusLauncher *m_launcherInter;
     DBusStartManager *m_startManagerInter;
-    DBusDock *m_dockInter;
+    DockInter *m_dockInter;
     std::unique_ptr<QTimer> m_iconRefreshTimer;
 
     QString m_searchText;

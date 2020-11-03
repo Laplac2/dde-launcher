@@ -24,7 +24,6 @@
 
 #include "launcherinterface.h"
 #include "sharedeventfilter.h"
-#include "dbusinterface/dbusdock.h"
 #include "view/applistview.h"
 #include "model/appslistmodel.h"
 #include "model/appsmanager.h"
@@ -41,6 +40,7 @@
 #include <dblureffectwidget.h>
 #include <dregionmonitor.h>
 #include <com_deepin_daemon_appearance.h>
+#include <com_deepin_dde_daemon_dock.h>
 #include <DSearchEdit>
 #include <DToolButton>
 
@@ -50,6 +50,7 @@
 DWIDGET_USE_NAMESPACE
 
 using Appearance = com::deepin::daemon::Appearance;
+using DockInter = com::deepin::dde::daemon::Dock;
 
 class WindowedFrame : public DBlurEffectWidget, public LauncherInterface
 {
@@ -130,7 +131,6 @@ private slots:
     void onOpacityChanged(const double value);
 
 private:
-    DBusDock *m_dockInter;
     std::unique_ptr<MenuWorker> m_menuWorker;
     SharedEventFilter *m_eventFilter;
     DPlatformWindowHandle m_windowHandle;
@@ -150,6 +150,7 @@ private:
     QTimer *m_delayHideTimer;
     QTimer *m_autoScrollTimer;
     Appearance *m_appearanceInter;
+    DockInter *m_dockInter;
     DisplayMode m_displayMode;
 
     int m_autoScrollStep = DLauncher::APPS_AREA_AUTO_SCROLL_STEP;

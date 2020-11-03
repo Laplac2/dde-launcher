@@ -34,8 +34,10 @@
 #include "src/dbusinterface/dbusmenumanager.h"
 #include "src/dbusinterface/dbustartmanager.h"
 #include "src/dbusinterface/monitorinterface.h"
-#include "src/dbusinterface/dbusdock.h"
+#include <com_deepin_dde_daemon_dock.h>
 #include "src/dbusinterface/dbuslauncher.h"
+
+using DockInter = com::deepin::dde::daemon::Dock;
 
 LauncherUnitTest::LauncherUnitTest(QObject *parent)
     : QObject(parent)
@@ -103,11 +105,8 @@ void LauncherUnitTest::case3_testDockDBus()
 {
     QBENCHMARK_ONCE;
 
-    DBusDock dockInterface(this);
+    DockInter dockInterface("com.deepin.dde.daemon.Dock", "/com/deepin/dde/daemon/Dock", QDBusConnection::sessionBus(), this);
     QVERIFY(dockInterface.isValid());
-
-    uint activeWindow = dockInterface.activeWindow();
-    qDebug() << QString("Test dockInterface activeWindow:%1").arg(activeWindow);
 
     QList<QDBusObjectPath> entries = dockInterface.entries();
     qDebug() << QString("Test dockInterface entrie count:%1").arg(entries.count());
@@ -127,7 +126,7 @@ void LauncherUnitTest::case3_testDockDBus()
     quint32 iconSize = dockInterface.iconSize();
     qDebug() << QString("Test dockInterface iconSize:%1").arg(iconSize);
 
-    QRect frontendRect = dockInterface.frontendRect();
+    QRect frontendRect = dockInterface.frontendWindowRect();
     qDebug() << QString("Test dockInterface frontendRect:(%1,%2,%3,%4").arg(frontendRect.left()).arg(frontendRect.top()).arg(frontendRect.right()).arg(frontendRect.bottom());
 }
 
@@ -264,8 +263,8 @@ void LauncherUnitTest::case9_testMonitorInterface()
  */
 void LauncherUnitTest::case10_testMonitorInterface()
 {
-    DBusDock dockInterface(this);
-    QRect r = dockInterface.frontendRect();
+    DockInter dockInterface("com.deepin.dde.daemon.Dock", "/com/deepin/dde/daemon/Dock", QDBusConnection::sessionBus(), this);
+    QRect r = dockInterface.frontendWindowRect();
     qDebug() << "frontendRect:" << r;
     //时尚模式
     if (dockInterface.position() != 1) {
