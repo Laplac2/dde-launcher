@@ -23,7 +23,7 @@
 
 #include "calculate_util.h"
 #include "src/dbusinterface/monitorinterface.h"
-#include "src/dbusinterface/dbusdisplay.h"
+// #include "src/dbusinterface/dbusdisplay.h"
 
 #include <QDebug>
 #include <QDesktopWidget>

@@ -54,8 +54,10 @@
 #include <QDebug>
 
 #include <dboxwidget.h>
+#include <com_deepin_daemon_display.h>
 
 DWIDGET_USE_NAMESPACE
+using DisplayInter = com::deepin::daemon::Display
 
 class BackgroundManager;
 class DBusLauncherService;
@@ -207,7 +209,7 @@ private:
 
     QList<ScrollWidgetAgent *> m_widgetAgentList;
     ScrollParallelAnimationGroup *m_animationGroup;
-    DBusDisplay *m_displayInter;
+    DisplayInter *m_displayInter;
     //只有窗口在完全显示出来后，才允许自动调整各部件位置
     bool m_canResizeDockPosition = false;
 };

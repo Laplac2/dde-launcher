@@ -101,7 +101,7 @@ FullScreenFrame::FullScreenFrame(QWidget *parent) :
     m_topSpacing(new QFrame),
     m_bottomSpacing(new QFrame),
     m_animationGroup(new ScrollParallelAnimationGroup(this)),
-    m_displayInter(new DBusDisplay(this))
+    m_displayInter(new DisplayInter("com.deepin.daemon.display","/com/deepin/daemon/display",QDBusConnection::sessionBus,this))
 {
     // accessible.h 中使用
     setAccessibleName("FullScrreenFrame");
@@ -1105,10 +1105,10 @@ void FullScreenFrame::initConnection()
     connect(m_appsManager, &AppsManager::IconSizeChanged, this, &FullScreenFrame::updateDockPosition);
     connect(m_appsManager, &AppsManager::dataChanged, this, &FullScreenFrame::reflashPageView);
 
-    connect(m_displayInter, &DBusDisplay::PrimaryRectChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
-    connect(m_displayInter, &DBusDisplay::ScreenHeightChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
-    connect(m_displayInter, &DBusDisplay::ScreenWidthChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
-    connect(m_displayInter, &DBusDisplay::PrimaryChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
+    connect(m_displayInter, &DisplayInter::PrimaryRectChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
+    connect(m_displayInter, &DisplayInter::ScreenHeightChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
+    connect(m_displayInter, &DisplayInter::ScreenWidthChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
+    connect(m_displayInter, &DisplayInter::PrimaryChanged, this, &FullScreenFrame::primaryScreenChanged, Qt::QueuedConnection);
 }
 
 void FullScreenFrame::showLauncher()
@@ -1684,4 +1684,3 @@ void FullScreenFrame::searchTextChanged(const QString &keywords)
         m_searchWidget->edit()->lineEdit()->clearFocus();
     }
 }
-

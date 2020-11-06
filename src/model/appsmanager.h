@@ -29,7 +29,7 @@
 #include "src/dbusinterface/dbusfileinfo.h"
 #include "src/dbusinterface/dbustartmanager.h"
 #include <com_deepin_dde_daemon_dock.h>
-#include "src/dbusinterface/dbusdisplay.h"
+// #include "src/dbusinterface/dbusdisplay.h"
 #include "src/global_util/calculate_util.h"
 
 #include <QHash>
